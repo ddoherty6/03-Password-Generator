@@ -18,9 +18,32 @@ var userInput = {
 
   getCharSet: function() {
     this.wantsLowerCase = confirm("Would you like your password to have lower case letters?");
+    if (this.wantsLowerCase === true) {
+      alert("Including lower case letters.");
+    } else {
+      alert("Okay, there will be no lower case letters in this password.")
+    }
+
     this.wantsUpperCase = confirm("Would you like your password to have upper case letters?");
+    if (this.wantsUpperCase === true) {
+      alert("Including upper case letters.");
+    } else {
+      alert("Okay, there will be no upper case letters in this password.")
+    }
+
     this.wantsNumeric = confirm("Would you like your password to have numbers?");
+    if (this.wantsNumeric === true) {
+      alert("Including numbers.");
+    } else {
+      alert("Okay, there will be no numbers in this password.");
+    }
+
     this.wantsSpecialChars = confirm("Would you like your password to have special characters?");
+    if (this.wantsSpecialChars === true) {
+      alert("Including special characters.");
+    } else {
+      alert("Okay, there will be no special characters in this password.");
+    }
   }
 }
 
@@ -83,8 +106,7 @@ gen = { //i am not calling this 'generate' because that is the id of the button 
 function writePassword() {
   var password = gen.Password();
   var passwordText = document.querySelector("#password");
-
-  passwordText.value = password;
+  passwordText.value = password.join("");
 
 }
 
@@ -94,6 +116,7 @@ generateBtn.addEventListener("click", writePassword);
 
 generate.onclick = function () {
 
+  userInput.passwordLength = null;
   userInput.getLength();
   userInput.getCharSet();
 
