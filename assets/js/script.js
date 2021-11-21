@@ -24,36 +24,53 @@ var userInput = {
   }
 }
 
-var pswrd = null; //creating this var outside of function - the function calls itself - idk what happens if you instantiate multiple times
-var generatePassword = function() {
-  
 
-  for(i=0; i<userInput.passwordLength; i++) {
-    pswrd.push(String.fromCharCode(Math.random()*94+32)); //generate random number [32, 126], obtain ascii char with that index, assign to array
+gen = { //i am not calling this 'generate' because that is the id of the button element-object
+  pswrd: Array(),
+  hasNum: false,
+  hasUpper: false,
+  hasLower: false,
+  HasSpecial: false,
 
-
-    //check rand number for whether it is Numeric, upper case, lowercase, or special
-    if(pswrd[i] >= 48 && pswrd[i] <= 57) {
-      hasNum = true;
+  trackCharTypes: function(letter){ //takes a char argument and checks whether it is numeric, upper case, lowercase, or special
+    if(letter >= 48 && letter <= 57) {
+      this.hasNum = true;
     }
-    else if(pswrd[i] >= 65 && pswrd[i] <= 90) {
-      hasUpper = true;
+    else if(letter >= 65 && letter <= 90) {
+      this.hasUpper = true;
     }
-    else if(pswrd[i]>= 97 && pswrd[i] <= 122) {
-      hasLower = true;
+    else if(letter >= 97 && letter <= 122) {
+      this.hasLower = true;
     }
     else {
-      hasSpecial = true;
+      this.hasSpecial = true;
     }
+  },
 
-    //if (!(hasNumeric === userInput.hasNumeric && hasUpperCase === use)
+
+  // 
+  
+  
+  Password: function() {
+
+    
 
 
-    return pswrd; //give the people what they want
+    for(i=0; i<userInput.passwordLength; i++) {
+      this.pswrd.push(String.fromCharCode(Math.random()*94+32)); //generate random number [32, 126], obtain ascii char with that index, assign to array
+
+      this.trackCharTypes(this.pswrd[i]);//check rand number for whether it is Numeric, upper case, lowercase, or special
+      
+
+      //if (!(hasNumeric === userInput.hasNumeric && hasUpperCase === use)
+
+    }
+    return this.pswrd; //give the people what they want
+    
+    this.pswrd = Array(); //reset array in case user presses button again
   }
 
   
-
 
 }
 
@@ -64,7 +81,7 @@ var generatePassword = function() {
 
 // Write password to the #password input
 function writePassword() {
-  var password = generatePassword();
+  var password = gen.Password();
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
@@ -80,7 +97,6 @@ generate.onclick = function () {
   userInput.getLength();
   userInput.getCharSet();
 
-  generatePassword();
   writePassword();
 }
 
