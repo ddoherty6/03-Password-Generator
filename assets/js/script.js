@@ -1,4 +1,3 @@
-// Assignment Code
 var generateBtn = document.querySelector("#generate");
 
 var userInput = {
@@ -43,6 +42,11 @@ var userInput = {
       alert("Including special characters.");
     } else {
       alert("Okay, there will be no special characters in this password.");
+    }
+
+    if (!this.wantsLowerCase && !this.wantsUpperCase && !this.wantsNumeric && !this.wantsSpecialChars) {
+      alert("You need to make at least one selection! Please try again:");
+      this.getCharSet();
     }
   }
 }
