@@ -13,6 +13,7 @@ var userInput = { // object to handle all interaction with the user
       input = window.prompt("How many characters would you like in your password? Please enter an integer between 8 and 128");
       this.passwordLength = Number.parseInt(input);
     }
+    alert("Okay, the password will have " + input + " characters.");
   },
 
   getCharSet: function() { // promt user for which types of chars they want - do not allow them to choose none
