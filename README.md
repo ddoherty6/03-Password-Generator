@@ -7,7 +7,7 @@
 
 - This page includes
     - Page with space where password prints, and 'Generate Password' button
-    - Button initiates a series of promts, asking user for details about the password such as:
+    - Button initiates a series of prompts, asking user for details about the password such as:
         - The password length
             - The script ensures the user enters an integer between and including 8 and 128
         - The types of characters that will be in the password
@@ -48,4 +48,4 @@ Provided code using the .addEventListener() funciton had to be commented out. It
 
 ## Future Development
 
-This application, in its current form, cannot accommodate more than one password request in the same session. The user must refresh the browser to enter new criteria and regenerate a new password. Using javascript methods to add and remove an additional container inside class "card-body" seems to be the best approach here.
+This application, in its current form, cannot accommodate more than one password request in the same session. The user must refresh the browser to enter new criteria and regenerate a new password. Using DOM API methods to add and remove an additional container inside class "card-body" seems to be the best approach here.
