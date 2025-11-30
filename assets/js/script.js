@@ -8,6 +8,15 @@ var userInput = { // object to handle all interaction with the user
   wantsNumeric: null,
   wantsSpecialChars: null,
 
+  setFormInput: function() {
+    this.passwordLength = document.querySelector("#length").value;
+    this.wantsLowerCase = document.querySelector("#includeLowercase").checked;
+    this.wantsUpperCase = document.querySelector("#includeUppercase").checked;
+    this.wantsNumeric = document.querySelector("#includeNumbers").checked;
+    this.wantsSpecialChars = document.querySelector("#includeSpecialCharacters").checked;
+    this.excludedCharacters = document.querySelector("#exclude").value;
+  },
+
   getLength: function() { // ask user how long they want the password to be, enforcing interger [8, 128]
     while (!Number.isInteger(this.passwordLength) || (this.passwordLength < 8 || this.passwordLength > 128)) { //passwordLength needs to be an integer 8-128
       input = window.prompt("How many characters would you like in your password? Please enter an integer between 8 and 128");
@@ -99,22 +108,41 @@ gen = { // object to handle password generation - i am not calling this 'generat
     this.hasSpecial = false;
     this.meetsCriteria = false;
   },
-  
-  makePassword: function() { // password generation driver
-    while (!this.meetsCriteria) { // keep generating passwords until full pswrd array meets criteria set by the user
-      this.resetPswrd(); // reset pswrd and other object vars to prepare for the genration loop
 
-      for(i=0; i<userInput.passwordLength; i++) { // this loop generates the password   
-        this.randNum = parseInt(Math.random()*94+32); //generate random number [32, 126], which is the range of characters we want in ascii index
-        this.pswrd.push(String.fromCharCode(this.randNum)); //obtain ascii char with that index, assign to array
-
-        while (!this.currentCharMeetsCriteria(this.randNum)) { //check that (index of) current char meets criteria set by user, if not, regen the number at array index and check again
-          this.randNum = parseInt(Math.random()*94+32);
-          this.pswrd[i] = String.fromCharCode(this.randNum);
-        }
-      }
-      this.criteriaCheck(); //check that all user-specified criteria are met, as above logic may generate password with 2 of the 3 selected char types, etc
+  setCharSet: function() {
+    var charSet = Array();
+    if (userInput.wantsLowerCase) {
+      charSet = charSet.concat(Array.from({length: 26}, (_, i) => String.fromCharCode(i + 97)));
     }
+    if (userInput.wantsUpperCase) {
+      charSet = charSet.concat(Array.from({length: 26}, (_, i) => String.fromCharCode(i + 65)));
+    }
+    if (userInput.wantsNumeric) {
+      charSet = charSet.concat(Array.from({length: 10}, (_, i) => String.fromCharCode(i + 48)));
+    }
+    if (userInput.wantsSpecialChars) {
+      charSet = charSet.concat(Array.from({length: 15}, (_, i) => String.fromCharCode(i + 33)));
+    }
+    if (userInput.excludedCharacters.length > 0) {
+      charSet = charSet.filter(char => !userInput.excludedCharacters.includes(char));
+    }
+    return charSet;
+  },
+  
+  // password generation driver 
+  makePassword: function() {
+    this.resetPswrd();
+    // get set of characters to select randomly from the user inputs
+    var charSet = this.setCharSet();
+   
+    // this loop generates the password   
+    for(i=0; i<userInput.passwordLength; i++) { 
+      this.randNum = parseInt(Math.random()*charSet.length);
+
+      //obtain ascii char with that index, assign to array
+      this.pswrd.push(charSet[this.randNum]);
+    }
+    
     return this.pswrd;
   }
 } 
@@ -128,15 +156,17 @@ function writePassword() {
 
 }
 
-// Add event listener to generate button
-//generateBtn.addEventListener("click", writePassword); //had to comment this out - it was running the writePassword function at this line upon click
-
-generate.onclick = function () {
+function generatePassword() {
  
-  userInput.getLength();
-  userInput.getCharSet();
+  console.log("Generate button clicked");
+  userInput.setFormInput();
 
   writePassword();
 }
+
+// Add event listener to generate button
+generateBtn.addEventListener("click", generatePassword);
+
+
 
 
